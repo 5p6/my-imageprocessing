@@ -22,12 +22,12 @@ namespace sobel
 class Me
 {
 public:
-	static int thresthold(const cv::Mat& image);//otsuãĞÖµ
-	static int gobalold(const cv::Mat& image,int dt);//È«¾ÖãĞÖµ
-	static int calchist(const cv::Mat& image, std::vector<double>& a,int k =calc::Yes);//Ö±·½Í¼£¬ÈİÆ÷Ò²¿ÉÒÔÓÃmap»òÕßset.
-	static int midfilter(const cv::Mat& image, cv::Mat& dst);//ÖĞÖµÂË²¨
-	static int Sobel(const cv::Mat& image, cv::Mat& dst, cv::Mat& sobel);//sobelÌİ¶È¼ÆËã
-	static int doubleold(const cv::Mat& image, std::vector<int>& num);//otsuË«ãĞÖµ
+	static int thresthold(const cv::Mat& image);//otsué˜ˆå€¼
+	static int gobalold(const cv::Mat& image,int dt);//å…¨å±€é˜ˆå€¼
+	static int calchist(const cv::Mat& image, std::vector<double>& a,int k =calc::Yes);//ç›´æ–¹å›¾ï¼Œå®¹å™¨ä¹Ÿå¯ä»¥ç”¨mapæˆ–è€…set.
+	static int midfilter(const cv::Mat& image, cv::Mat& dst);//ä¸­å€¼æ»¤æ³¢
+	static int Sobel(const cv::Mat& image, cv::Mat& dst, cv::Mat& sobel);//sobelæ¢¯åº¦è®¡ç®—
+	static int doubleold(const cv::Mat& image, std::vector<int>& num);//otsuåŒé˜ˆå€¼
 };
 
 
@@ -43,7 +43,7 @@ int Me::calchist(const cv::Mat& image, std::vector<double>& a,int k )
 {
 	if (image.empty())
 	{
-		std::cout << "ÎŞÍ¼Ïñ" << std::endl;
+		std::cout << "æ— å›¾åƒ" << std::endl;
 		return -1;
 	}
 	a.clear();
@@ -76,27 +76,27 @@ int Me::calchist(const cv::Mat& image, std::vector<double>& a,int k )
 		    break;
 	    default:
 	     {
-		    std::cout << "ÊäÈë´íÎó" << std::endl;
+		    std::cout << "è¾“å…¥é”™è¯¯" << std::endl;
 		    break;
 	      }
 	}
 	return 1;
 }
-int Me::thresthold(const cv::Mat& image)//Í¼ÏñãĞÖµ;
+int Me::thresthold(const cv::Mat& image)//å›¾åƒé˜ˆå€¼;
 {
 	if (image.empty() || image.type() !=CV_8UC1)
 	{
-		std::cout << "Í¼ÏñÊäÈë´íÎó" << std::endl;
+		std::cout << "å›¾åƒè¾“å…¥é”™è¯¯" << std::endl;
 		system("pause");
 		return -1;
 	}
 
 	cv::Mat imagec = image.clone();
 	std::vector<double> hist;
-	Me::calchist(imagec, hist);//µÃµ½¹éÒ»»¯Ö±·½Í¼ÈİÆ÷
+	Me::calchist(imagec, hist);//å¾—åˆ°å½’ä¸€åŒ–ç›´æ–¹å›¾å®¹å™¨
 
-    std::vector<double> P1(256, 0);//Ààc1µÄ·¢Éú¸ÅÂÊ
-    std::vector<double> m1(256, 0);//Ààc1µÄ¾ùÖµ
+    std::vector<double> P1(256, 0);//ç±»c1çš„å‘ç”Ÿæ¦‚ç‡
+    std::vector<double> m1(256, 0);//ç±»c1çš„å‡å€¼
     for (int i = 0; i < 256; i++)
     {
     	for (int k = 0; k < i + 1; k++)
@@ -114,16 +114,16 @@ int Me::thresthold(const cv::Mat& image)//Í¼ÏñãĞÖµ;
 
      
      
-     double m=0;//È«¾Ö¾ùÖµ
+     double m=0;//å…¨å±€å‡å€¼
      for (int i = 0; i < 256; i++)
      {
      	m += i * hist[i];
      }
      
      
-     std::vector<double> var(256, 0);//Àà¼ä·½²î
+     std::vector<double> var(256, 0);//ç±»é—´æ–¹å·®
      
-     for (int i = 0; i < 256; i++)//Àà¼ä·½²î¼ÆËã
+     for (int i = 0; i < 256; i++)//ç±»é—´æ–¹å·®è®¡ç®—
      {
      	if (0<P1[i]  &&   P1[i]<1)
      	{
@@ -133,7 +133,7 @@ int Me::thresthold(const cv::Mat& image)//Í¼ÏñãĞÖµ;
      
      
        int k=0;
-     //Ñ°ÕÒÈÃÀà¼ä·½²î×î´óµÄkÖµ
+     //å¯»æ‰¾è®©ç±»é—´æ–¹å·®æœ€å¤§çš„kå€¼
      for (int i = 0; i < 256; i++)
      {
      	if (var[i] > var[k])
@@ -162,7 +162,7 @@ int Me::midfilter(const cv::Mat& image, cv::Mat& dst)
 	const uchar* pixel = NULL;
 	const uchar* pixeldown = NULL;
 
-	//ÖĞ¼äÉÌ
+	//ä¸­é—´å•†
 	cv::Mat src=image.clone();
 	uchar* srcptr = NULL;
 
@@ -280,7 +280,7 @@ int pooling::maxpool(const cv::Mat& image, cv::Mat& dst,int size)
 
 
 }
-int Me::doubleold(const cv::Mat& image, std::vector<int>& num)//otsuË«ãĞÖµ·¨
+int Me::doubleold(const cv::Mat& image, std::vector<int>& num)//otsuåŒé˜ˆå€¼æ³•
 {
 	if (image.channels() != 1 || image.empty())
 	{
@@ -288,42 +288,42 @@ int Me::doubleold(const cv::Mat& image, std::vector<int>& num)//otsuË«ãĞÖµ·¨
 	}
 
 	cv::Mat imagec = image.clone();
-	//¹éÒ»»¯Ö±·½Í¼
+	//å½’ä¸€åŒ–ç›´æ–¹å›¾
 	std::vector<double>hist;
 	Me::calchist(imagec, hist);
 
-	//È«¾Ö¾ùÖµ
+	//å…¨å±€å‡å€¼
 	double m = 0;
 	for (int i = 0; i < hist.size(); i++)
 	{
 		m += i * hist[i];
 	}
-	//Ë«ãĞÖµ±äÁ¿
+	//åŒé˜ˆå€¼å˜é‡
 	int var1 = 0;
 	int var2 = 0;
 	
-	//k1ÎªĞĞ£¬k2ÎªÁĞ;
-	//ÀàµÄ¸ÅÂÊ¾ØÕó ºÍ ÆäÖ¸Õë
+	//k1ä¸ºè¡Œï¼Œk2ä¸ºåˆ—;
+	//ç±»çš„æ¦‚ç‡çŸ©é˜µ å’Œ å…¶æŒ‡é’ˆ
 	cv::Mat P1(cv::Size(256, 256), CV_64FC1,cv::Scalar(0));
 	cv::Mat P2 = P1.clone(), P3 = P1.clone();
 
 	float* p1 = NULL;
 	float* p2 = NULL;
 	float* p3 = NULL;
-	//ÀàµÄ¾ùÖµ¾ØÕó ºÍ  ÆäÖ¸Õë
+	//ç±»çš„å‡å€¼çŸ©é˜µ å’Œ  å…¶æŒ‡é’ˆ
 	cv::Mat m1(cv::Size(256, 256), CV_64FC1,cv::Scalar(0));
     cv::Mat m2 = m1.clone(),m3 = m1.clone();
 
 	float* n1 = NULL;
 	float* n2 = NULL;
 	float* n3 = NULL;
-	//Àà¼ä·½²î¾ØÕó
+	//ç±»é—´æ–¹å·®çŸ©é˜µ
 	cv::Mat var(cv::Size(256, 256), CV_64FC1, cv::Scalar(0));
 	
 	float* varptr = NULL;
 
 
-	//Èı¸öÀàµÄ¸ÅÂÊ
+	//ä¸‰ä¸ªç±»çš„æ¦‚ç‡
 	for (int k1 = 1; k1 < 254; k1++)  
 	{
 		p1 = P1.ptr<float>(k1);
@@ -345,7 +345,7 @@ int Me::doubleold(const cv::Mat& image, std::vector<int>& num)//otsuË«ãĞÖµ·¨
 	}
 
 
-	//Èı¸öÀàµÄ¾ùÖµ¾ØÕó
+	//ä¸‰ä¸ªç±»çš„å‡å€¼çŸ©é˜µ
 	for (int k1 = 1; k1 < 254; k1++)
 	{
 		n1 = m1.ptr<float>(k1);
@@ -403,7 +403,7 @@ int Me::doubleold(const cv::Mat& image, std::vector<int>& num)//otsuË«ãĞÖµ·¨
 	}
 
 
-	float* me = var.ptr<float>(var1) + var2;//³õÊ¼»¯×î´óÖµµã
+	float* me = var.ptr<float>(var1) + var2;//åˆå§‹åŒ–æœ€å¤§å€¼ç‚¹
 
 	for (int k1 = 1; k1 < 254; k1++)
 	{
@@ -412,10 +412,10 @@ int Me::doubleold(const cv::Mat& image, std::vector<int>& num)//otsuË«ãĞÖµ·¨
 		{
 			if (*(varptr + k2) > *me)
 			{
-				//¸üĞÂ×î´óÖµµÄ×ø±ê
+				//æ›´æ–°æœ€å¤§å€¼çš„åæ ‡
 				var1 = k1;
 				var2 = k2;
-				me = var.ptr<float>(var1) + var2;//¸üĞÂ
+				me = var.ptr<float>(var1) + var2;//æ›´æ–°
 			}
 		}
 	}
@@ -430,7 +430,7 @@ int Me::gobalold(const cv::Mat& image,int dt)
 {
 	if (image.empty() || image.type() != CV_8UC1)
 	{
-		std::cout << "Í¼Æ¬ÊäÈë´íÎó" << std::endl;
+		std::cout << "å›¾ç‰‡è¾“å…¥é”™è¯¯" << std::endl;
 		return -1;
 	}
 	cv::Mat imagec = image.clone();
@@ -443,10 +443,10 @@ int Me::gobalold(const cv::Mat& image,int dt)
 	}
 	T = T / ((float)imagec.rows * imagec.cols);
 
-	double m1=0, m2=0; //Á½¸öÀàµÄ¾ùÖµ
-	double sum1=0, sum2 = 0;//Á½¸öÀàµÄÏñËØ¸öÊı
+	double m1=0, m2=0; //ä¸¤ä¸ªç±»çš„å‡å€¼
+	double sum1=0, sum2 = 0;//ä¸¤ä¸ªç±»çš„åƒç´ ä¸ªæ•°
 
-	double T1=0;//¼ÇÂ¼Ç°Ò»¸öãĞÖµ
+	double T1=0;//è®°å½•å‰ä¸€ä¸ªé˜ˆå€¼
 	
 	while (true)
 	{
@@ -456,19 +456,19 @@ int Me::gobalold(const cv::Mat& image,int dt)
 	    	sum1 += hist[i];
 	    	m1 += hist[i] * i ;
 	    }
-	    m1 = m1 / sum1;//ÇóµÚÒ»¸öÀàµÄ¾ùÖµ
+	    m1 = m1 / sum1;//æ±‚ç¬¬ä¸€ä¸ªç±»çš„å‡å€¼
 
 	    for (int i = (int)T ; i <hist.size(); i++)
 	    {
 	    	sum2 += hist[i];
 	    	m2 += hist[i] * i;
 	    }
-	    m2 = m2 / sum2;//µÚ¶ş¸öÀàµÄ¾ùÖµ
+	    m2 = m2 / sum2;//ç¬¬äºŒä¸ªç±»çš„å‡å€¼
 
-	    T = (m1 + m2) / 2;//ÖØĞÂ¼ÆËããĞÖµ
+	    T = (m1 + m2) / 2;//é‡æ–°è®¡ç®—é˜ˆå€¼
 
 		if (abs(T - T1) <= dt)break;
-		//ÇåÁã
+		//æ¸…é›¶
 		m1 = 0;
 		m2 = 0;
 		sum1 = 0;
@@ -516,11 +516,11 @@ int Me::Sobel(const cv::Mat& image, cv::Mat& dst,cv::Mat& sobel)
 
 
 }
-int threshinto(const cv::Mat& image, cv::Mat& dst, uchar x)//Í¼ÏñµÄotsuãĞÖµ´¦Àí
+int threshinto(const cv::Mat& image, cv::Mat& dst, uchar x)//å›¾åƒçš„otsué˜ˆå€¼å¤„ç†
 {
 	if (image.empty() || image.type()!=CV_8UC1)
 	{
-		std::cout << "ÎŞÍ¼ÏñÊäÈë" << std::endl;
+		std::cout << "æ— å›¾åƒè¾“å…¥" << std::endl;
 		system("pause");
 		return -1;
 	}
@@ -552,7 +552,7 @@ int doubleinto(const cv::Mat& image, cv::Mat& dst, std::vector<int>& num,int k =
 {
 	if (image.empty() || image.type() != CV_8UC1)
 	{
-		std::cout << "ÊäÈë´íÎó" << std::endl;
+		std::cout << "è¾“å…¥é”™è¯¯" << std::endl;
 		return -1;
 	}
 	cv::Mat imagec = image.clone();
@@ -641,7 +641,7 @@ int My_sobel(const cv::Mat& image, cv::Mat& dst, int x)
 {
 	if (image.empty() || image.type() != CV_8UC1)
 	{
-		std::cout << "ÊäÈëÍ¼Æ¬´íÎó" << std::endl;
+		std::cout << "è¾“å…¥å›¾ç‰‡é”™è¯¯" << std::endl;
 		return -1;
 	}
 	cv::Mat sobel;
